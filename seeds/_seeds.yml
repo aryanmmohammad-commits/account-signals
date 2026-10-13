@@ -1,0 +1,34 @@
+version: 2
+
+seeds:
+  - name: thresholds
+    description: >
+      The alert rules (replaces Airtable in v0.1). Rules with the same
+      signal_type must all pass together. Edit this file and rebuild:
+      no code changes needed.
+    columns:
+      - name: threshold_id
+        data_tests: [unique, not_null]
+      - name: signal_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['usage_drop', 'expansion']
+      - name: metric
+        description: >
+          Must name a metric that signal_changes knows. A typo here would
+          silently drop the rule, so it is tested.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['utilization_change_pct', 'this_week_utilization', 'whitespace_count']
+      - name: operator
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['<=', '>=', '<', '>']
+      - name: route_to_role
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['CSM', 'AE']

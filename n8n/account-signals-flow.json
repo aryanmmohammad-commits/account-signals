@@ -1,0 +1,170 @@
+{
+  "name": "account-signals",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "98b59f3b-cafa-49b1-b206-2148283b9456",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/signals/sync",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "9d34a906-e314-4721-8802-5f2cab7c7c79",
+      "name": "Sync"
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8000/signals/pending",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "fe9858bf-7d4b-4b8e-8890-f8552974beca",
+      "name": "Get pending"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C8UEE9YKB",
+          "mode": "id"
+        },
+        "text": "={{ $json.slack_text }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        672,
+        0
+      ],
+      "id": "3bd3469b-5ae6-4cf5-aa3e-2704a5e54de5",
+      "name": "Send a message",
+      "webhookId": "ac180c30-702e-4095-ad06-5732a212d6e5",
+      "credentials": {
+        "slackApi": {
+          "id": "nMhO4nzN3kARSnO4",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/signals/delivered",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "signal_key",
+              "value": "={{ $('Get pending').item.json.signal_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        896,
+        0
+      ],
+      "id": "51e3a051-7567-43b2-9e8a-18e96a904c14",
+      "name": "Mark delivered"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sync": {
+      "main": [
+        [
+          {
+            "node": "Get pending",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get pending": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Mark delivered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "386f101b-9cca-4545-a764-46626f5ab15a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "37a9866921899802c4191675de1ddd2b814eabdcd7acf7675dbdfa6133907ff0"
+  },
+  "nodeGroups": [],
+  "id": "SoHsaIptpSmEFkM0",
+  "tags": []
+}

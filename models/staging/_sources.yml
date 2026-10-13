@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Exports copied as-is by load_raw.py. Never edited."
+    tables:
+      - name: accounts
+        columns:
+          - name: account_id
+            data_tests: [unique, not_null]
+      - name: owners
+        columns:
+          - name: owner_id
+            data_tests: [unique, not_null]
+      - name: products
+        columns:
+          - name: product_id
+            data_tests: [unique, not_null]
+      - name: account_products
+      - name: tenant_map
+        columns:
+          - name: tenant_id
+            data_tests: [unique, not_null]
+          - name: account_id
+            data_tests:
+              - not_null:            # catches the empty account (T-5023)
+                  config:
+                    severity: warn
+              - relationships:       # catches the typo ACC-0I7 (T-5022)
+                  arguments:
+                    to: source('raw', 'accounts')
+                    field: account_id
+                  config:
+                    severity: warn
+      - name: usage_weekly
+      - name: churnzero_health
+      - name: gong_calls

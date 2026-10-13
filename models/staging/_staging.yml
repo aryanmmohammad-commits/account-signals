@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: stg_accounts
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: ae_owner_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_owners')
+                field: owner_id
+      - name: csm_owner_id
+        description: "Empty means no CSM. FastAPI routes those alerts to RevOps."
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_owners')
+                field: owner_id
+
+  - name: stg_owners
+    columns:
+      - name: owner_id
+        data_tests: [unique, not_null]
+      - name: owner_role
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['AE', 'CSM', 'RevOps']
+
+  - name: stg_products
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+
+  - name: stg_account_products
+    data_tests:
+      - unique:
+          column_name: "concat(account_id, '|', product_id)"
+    columns:
+      - name: account_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_accounts')
+                field: account_id
+      - name: product_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+
+  - name: quarantine_tenant_map
+    description: "Tenant mappings set aside, with the reason. Reported, never counted."
+
+  - name: stg_tenant_map
+    columns:
+      - name: tenant_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_accounts')
+                field: account_id
+
+  - name: stg_usage_weekly
+    data_tests:
+      - unique:
+          column_name: "concat(tenant_id, '|', week_start)"
+
+  - name: stg_churnzero_health
+    columns:
+      - name: account_id
+        data_tests:
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_accounts')
+                field: account_id
+
+  - name: stg_gong_calls
+    columns:
+      - name: call_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_accounts')
+                field: account_id

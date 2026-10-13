@@ -1,0 +1,14 @@
+# Python
+.venv/
+__pycache__/
+
+# dbt build output
+target/
+logs/
+dbt_packages/
+.user.yml
+
+# Local databases: rebuilt from data/ with load_raw.py + dbt build
+warehouse.duckdb
+warehouse.duckdb.wal
+signals_log.db

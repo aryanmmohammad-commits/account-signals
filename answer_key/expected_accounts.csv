@@ -1,0 +1,21 @@
+account_id,seats,last_week_users,this_week_users,last_week_health,this_week_health,health_change_pct,whitespace_count,expected_signals,routed_to,what_this_row_tests
+ACC-001,100,50,52,0.50,0.52,4.0,3,none,,Case 1: stable account
+ACC-002,80,32,30,0.40,0.38,-6.3,2,none,,Case 1: stable account
+ACC-003,200,100,95,0.50,0.48,-5.0,3,none,,Case 1: stable usage despite vendor score below 40
+ACC-004,60,30,32,0.50,0.53,6.7,2,none,,Case 1: stable account
+ACC-005,150,75,72,0.50,0.48,-4.0,1,none,,Case 1: stable account
+ACC-006,120,72,75,0.60,0.63,4.2,3,none,,Case 1: stable account
+ACC-007,90,45,42,0.50,0.47,-6.7,2,none,,Case 1: stable account
+ACC-008,120,80,40,0.67,0.33,-50.0,2,usage_drop,usage_drop: Elena Corvett,Case 2: big drop before near renewal despite lagging high vendor score
+ACC-009,70,50,35,0.71,0.50,-30.0,3,usage_drop,usage_drop: Jules Renwicke,Case 3: exactly -30% triggers usage_drop; calculate from raw users
+ACC-010,160,100,71,0.63,0.44,-29.0,2,none,,Case 4: -29% is just under usage_drop boundary
+ACC-011,60,45,25,0.75,0.42,-44.4,4,usage_drop,usage_drop: Ari Talmora,Case 5: missing CSM routes usage_drop to RevOps
+ACC-012,40,60,40,1.50,1.00,-33.3,3,usage_drop;expansion,usage_drop: Jules Renwicke; expansion: Tessa Marlowen,Case 6: over-seat usage allows both signals; call context is 75 days old
+ACC-013,150,120,118,0.80,0.79,-1.7,2,expansion,expansion: Mira Dovren,Case 7: high usage and two unowned products trigger expansion
+ACC-014,50,34,35,0.68,0.70,2.9,3,expansion,expansion: Owen Kelwick,Case 8: exactly 0.70 health triggers expansion
+ACC-015,100,68,69,0.68,0.69,1.5,3,none,,Case 9: 0.69 health is just under expansion boundary
+ACC-016,80,66,68,0.83,0.85,3.0,0,none,,Case 10: high health with zero whitespace prevents expansion
+ACC-017,100,80,64,0.80,0.64,-20.0,3,none,,Case 11: sum both tenants; account drops 20% although tenant B drops 70%
+ACC-018,80,40,38,0.50,0.48,-5.0,3,none,,Case 12: deduplicate last-week row to prevent fake -52.5% drop
+ACC-019,200,30,31,0.15,0.16,3.3,3,none,,Case 13: rule gap; persistently low health has no change-based signal
+ACC-020,50,20,30,0.40,0.60,50.0,3,none,,Case 14: 50% growth remains below expansion health threshold

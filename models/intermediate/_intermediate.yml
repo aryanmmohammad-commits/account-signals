@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: int_account_usage_weekly
+    description: "Usage re-grained from tenant-week to account-week. Quarantined tenants are excluded."
+    data_tests:
+      - unique:
+          column_name: "concat(account_id, '|', week_start)"
+    columns:
+      - name: account_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_accounts')
+                field: account_id
+
+  - name: int_account_whitespace
+    description: "Products each account doesn't own yet. One row per account per missing product."
+    data_tests:
+      - unique:
+          column_name: "concat(account_id, '|', product_id)"

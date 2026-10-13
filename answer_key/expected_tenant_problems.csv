@@ -1,0 +1,4 @@
+tenant_id,problem,what_should_happen
+T-5022,tenant_map.account_id is ACC-0I7 which does not exist in accounts,A relationships test catches the dangling account ID. Quarantine the mapping and exclude both usage rows from account metrics.
+T-5023,tenant_map.account_id is empty,A not_null test catches the empty account ID. Relationships tests skip empty values. Quarantine the mapping and exclude both usage rows from account metrics.
+T-5018,usage_weekly has an identical duplicate for 2026-09-28 with 40 users,A uniqueness check on tenant_id and week_start catches the duplicate. Remove one identical row before aggregation. Keep 40 last-week users and 38 this-week users; no signal.

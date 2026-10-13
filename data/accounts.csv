@@ -1,0 +1,21 @@
+account_id,account_name,ae_owner_id,csm_owner_id,seats,arr_usd,renewal_date
+ACC-001,Velmora Residential,O1,O4,100,18500,2027-01-15
+ACC-002,Brindlecrest Property Group,O2,O5,80,20400,2027-03-01
+ACC-003,Orivale Apartment Management,O3,O6,200,33000,2026-12-18
+ACC-004,Maverton Community Partners,O1,O4,60,20700,2027-05-10
+ACC-005,Cindelbrook Residential,O2,O5,150,48000,2027-06-24
+ACC-006,Talveridge Property Services,O3,O6,120,25200,2027-02-07
+ACC-007,Fenwickora Communities,O1,O4,90,29250,2026-11-26
+ACC-008,Dovenshire Apartment Partners,O2,O5,120,27600,2026-11-20
+ACC-009,Larkevan Residential Group,O3,O6,70,14700,2027-04-12
+ACC-010,Quillstone Building Management,O1,O4,160,44000,2027-08-19
+ACC-011,Emberlune Property Partners,O2,,60,7200,2027-01-09
+ACC-012,Avendell Communities,O3,O6,40,8400,2026-12-05
+ACC-013,Rovenmere Residential,O1,O4,150,41250,2027-07-22
+ACC-014,Thistrelane Property Group,O2,O5,50,8250,2027-03-17
+ACC-015,Oakenvara Apartment Services,O3,O6,100,18500,2027-09-15
+ACC-016,Pellavine Communities,O1,O4,80,38400,2027-06-03
+ACC-017,Westrin Hollow Residential,O2,O5,100,18500,2027-02-28
+ACC-018,Corvellis Property Management,O3,O6,80,16800,2027-05-29
+ACC-019,Meridusk Apartment Partners,O1,O4,200,33000,2026-11-09
+ACC-020,Bramblevex Communities,O2,O5,50,9250,2027-08-06

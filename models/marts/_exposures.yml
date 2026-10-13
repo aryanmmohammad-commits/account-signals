@@ -1,0 +1,18 @@
+version: 2
+
+exposures:
+  - name: slack_account_alerts
+    label: Slack account alerts
+    type: application
+    maturity: low
+    url: http://127.0.0.1:8000/docs
+    description: >
+      FastAPI reads these tables, routes each alert to its owner,
+      and n8n posts it to Slack once.
+    depends_on:
+      - ref('signal_changes')
+      - ref('stg_accounts')
+      - ref('stg_owners')
+      - ref('int_account_whitespace')
+    owner:
+      name: Aryan M

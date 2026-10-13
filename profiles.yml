@@ -1,0 +1,7 @@
+account_signals:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: warehouse.duckdb   # the file your loader just filled
+      threads: 4

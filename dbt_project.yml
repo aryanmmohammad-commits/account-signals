@@ -1,0 +1,23 @@
+name: account_signals
+version: "0.1.0"
+config-version: 2
+profile: account_signals      # which kitchen address to use (from profiles.yml)
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+models:
+  account_signals:
+    staging:
+      +materialized: view     # cleaned sources: saved queries, always fresh
+    intermediate:
+      +materialized: view     # prep: combine and re-grain
+    marts:
+      +materialized: table    # answers: real tables, fast for FastAPI to read
+
+seeds:
+  account_signals:
+    thresholds:
+      +column_types:
+        value: double         # 0.70 and -30 must compare as numbers, exactly

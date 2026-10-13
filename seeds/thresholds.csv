@@ -1,0 +1,4 @@
+threshold_id,signal_type,metric,operator,value,route_to_role,version
+TH1,usage_drop,utilization_change_pct,<=,-30,CSM,1
+TH2,expansion,this_week_utilization,>=,0.70,AE,1
+TH3,expansion,whitespace_count,>=,1,AE,1

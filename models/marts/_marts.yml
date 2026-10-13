@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: account_utilization
+    description: "One row per account: utilization last week vs this week, with an honest unknown."
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: change_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['known', 'unknown_no_baseline', 'unknown_missing_week']
+
+  - name: signal_changes
+    description: "Every signal the rules found this week. status says which ones go out as alerts."
+    columns:
+      - name: signal_key
+        description: "account|signal|week. FastAPI uses it to log and send each alert once."
+        data_tests: [unique, not_null]
+      - name: signal_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['usage_drop', 'expansion']
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['alert', 'suppressed']
+      - name: route_to_role
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['CSM', 'AE']
+
+unit_tests:
+  - name: utilization_change_handles_missing_baselines
+    description: >
+      The real data has no zero or missing baseline, so we invent tiny inputs
+      to prove the edge cases: X had 0 users last week, Y has no usage at all,
+      Z is a normal account as a control.
+    model: account_utilization
+    given:
+      - input: ref('int_account_usage_weekly')
+        rows:
+          - {account_id: ACC-X, week_start: '2026-09-28', weekly_active_users: 0,  tenant_count: 1}
+          - {account_id: ACC-X, week_start: '2026-10-05', weekly_active_users: 12, tenant_count: 1}
+          - {account_id: ACC-Z, week_start: '2026-09-28', weekly_active_users: 20, tenant_count: 1}
+          - {account_id: ACC-Z, week_start: '2026-10-05', weekly_active_users: 10, tenant_count: 1}
+      - input: ref('stg_accounts')
+        rows:
+          - {account_id: ACC-X, seats: 50}
+          - {account_id: ACC-Y, seats: 40}
+          - {account_id: ACC-Z, seats: 40}
+    expect:
+      rows:
+        - {account_id: ACC-X, utilization_change_pct: null,  change_status: unknown_no_baseline}
+        - {account_id: ACC-Y, utilization_change_pct: null,  change_status: unknown_missing_week}
+        - {account_id: ACC-Z, utilization_change_pct: -50.0, change_status: known}
