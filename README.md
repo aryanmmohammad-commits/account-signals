@@ -4,7 +4,7 @@ A small retention system for a B2B SaaS company. Every week it compares each cus
 
 > Working prototype / reference design. All companies, people and numbers are synthetic.
 
-![Slack alerts](docs/screenshots/slack-alerts.png)
+
 
 ## Where it sits in the revenue chain
 
@@ -30,7 +30,7 @@ data/*.csv ─► load_raw.py ─► DuckDB  raw schema (untouched exports)
 
 ![dbt lineage](docs/screenshots/dbt-lineage.png)
 
-![n8n flow](docs/screenshots/n8n-flow.png)
+
 
 | Part | Job | Tool |
 |---|---|---|
